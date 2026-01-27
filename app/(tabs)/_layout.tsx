@@ -1,35 +1,67 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { GTDColors } from '@/constants/theme';
+import { useIsColumnMode } from '@/hooks/use-screen-width';
+import { ColumnLayout } from '@/components/gtd';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const isColumnMode = useIsColumnMode();
 
+  // For wide screens (like Samsung Fold unfolded), show column layout
+  if (isColumnMode) {
+    return (
+      <View style={styles.container}>
+        <ColumnLayout />
+      </View>
+    );
+  }
+
+  // For narrow screens, show tab layout
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: GTDColors.cyan,
+        tabBarInactiveTintColor: GTDColors.textMuted,
+        tabBarStyle: {
+          backgroundColor: GTDColors.backgroundSecondary,
+          borderTopColor: GTDColors.border,
+        },
         headerShown: false,
         tabBarButton: HapticTab,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Next',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="checklist" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="gtd"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'GTD',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="list.bullet" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="entries"
+        options={{
+          title: 'Entries',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="clock" color={color} />,
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: GTDColors.background,
+  },
+});

@@ -1,12 +1,29 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * GTD Claude Theme Colors
  */
 
 import { Platform } from 'react-native';
 
+// GTD App specific colors (dark theme only)
+export const GTDColors = {
+  background: '#1a1a1a',
+  backgroundSecondary: '#252525',
+  text: '#e0e0e0',
+  textMuted: '#888888',
+  border: '#444444',
+  hover: '#333333',
+  cyan: '#00befc',
+  green: '#27ae60',
+  red: '#eb5757',
+  purple: '#be50ff',
+  statusBg: '#3d3d00',
+  statusBorder: '#666600',
+  statusText: '#ffeb3b',
+  errorBg: '#3d1a1a',
+};
+
 const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const tintColorDark = GTDColors.cyan;
 
 export const Colors = {
   light: {
@@ -18,11 +35,11 @@ export const Colors = {
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: GTDColors.text,
+    background: GTDColors.background,
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: GTDColors.textMuted,
+    tabIconDefault: GTDColors.textMuted,
     tabIconSelected: tintColorDark,
   },
 };
