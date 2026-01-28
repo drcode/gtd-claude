@@ -119,13 +119,11 @@ const styles = StyleSheet.create({
     color: GTDColors.text,
     fontSize: 14,
     lineHeight: 21,
-    fontFamily: 'monospace',
   },
   diffLine: {
     color: GTDColors.text,
     fontSize: 14,
     lineHeight: 21,
-    fontFamily: 'monospace',
   },
   delete: {
     color: GTDColors.red,

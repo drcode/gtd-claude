@@ -1,18 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { COLUMN_BREAKPOINT } from '@/constants/config';
 
 export function useScreenWidth() {
-  const [width, setWidth] = useState(Dimensions.get('window').width);
-
-  useEffect(() => {
-    const subscription = Dimensions.addEventListener('change', ({ window }) => {
-      setWidth(window.width);
-    });
-
-    return () => subscription?.remove();
-  }, []);
-
+  const { width } = useWindowDimensions();
   return width;
 }
 
