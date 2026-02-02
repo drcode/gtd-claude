@@ -32,5 +32,5 @@ export function getAuthHeader(): string {
 }
 
 // Layout breakpoint - use columns if screen width >= this value
-// Fold 6 inner display: ~768dp portrait, ~1000dp landscape
-export const COLUMN_BREAKPOINT = 850;
+// Fold 6 inner display: ~707dp portrait, ~823dp landscape
+export const COLUMN_BREAKPOINT = 780;

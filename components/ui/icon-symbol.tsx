@@ -21,6 +21,7 @@ const MAPPING = {
   'checklist': 'checklist',
   'list.bullet': 'list',
   'clock': 'schedule',
+  'arrow.clockwise': 'refresh',
 } as IconMapping;
 
 /**

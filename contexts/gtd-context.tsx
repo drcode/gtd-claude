@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from 'react';
 import * as api from '@/services/api';
 
 interface GTDContextType {
@@ -50,9 +50,21 @@ export function GTDProvider({ children }: { children: ReactNode }) {
   const [pendingReviewText, setPendingReviewText] = useState<string | null>(null);
   const [pendingCompactSuggestions, setPendingCompactSuggestions] = useState<api.CompactSuggestion[] | null>(null);
 
+  const reloadStatusTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const showStatus = useCallback((msg: string, isError = false) => {
     setStatus(msg);
     setStatusIsError(isError);
+  }, []);
+
+  const hideStatusIfMatches = useCallback((expected: string) => {
+    setStatus((current) => {
+      if (current === expected) {
+        setStatusIsError(false);
+        return null;
+      }
+      return current;
+    });
   }, []);
 
   const hideStatus = useCallback(() => {
@@ -80,19 +92,29 @@ export function GTDProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadState = useCallback(async () => {
+    if (reloadStatusTimeout.current) {
+      clearTimeout(reloadStatusTimeout.current);
+      reloadStatusTimeout.current = null;
+    }
+
     try {
+      setDiffLines(null);
+      showStatus('Reloading...');
       setIsLoading(true);
       const data = await api.getState();
       setGtdText(data.gtd_text);
       setNextActions(data.next_actions);
       setUserEntries(data.user_entries);
+      const msg = `Reloaded ${new Date().toLocaleTimeString()}`;
+      showStatus(msg);
+      reloadStatusTimeout.current = setTimeout(() => hideStatusIfMatches(msg), 2000);
     } catch (e) {
       console.error('Failed to load state:', e);
       showStatus('Failed to load state', true);
     } finally {
       setIsLoading(false);
     }
-  }, [showStatus]);
+  }, [showStatus, hideStatusIfMatches]);
 
   const refreshNextActionsInBackground = useCallback(async () => {
     try {
